@@ -393,7 +393,7 @@ Resumo em Linha:
 ##  Links
 
 -  **Vídeo Pitch**: [YouTube — não listado](https://youtube.com)
--  **Repositório GitHub**: [github.com/seu-usuario/eletrocore](https://github.com)
+-  **Repositório GitHub**: https://github.com/pietrolorande01-ELFzen/SPRINT-ASSEMBLY
 
 ---
 
