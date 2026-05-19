@@ -6,9 +6,11 @@
 
 | Nome | RM |
 |------|----|
-| [Nome do Integrante 1] | RM000000 |
-| [Nome do Integrante 2] | RM000000 |
-| [Nome do Integrante 3] | RM000000 |
+| [ Ana Beatriz Berbel Marini ] | RM574176 |
+| [ Gustavo Bonamico Piccoli ] | RM569984 |
+| [ Marcelo Francisco Josafá Ribeiro Martins ] | RM573905 |
+| [ Maria Eduarda Medeiros Lemos ] | RM574094 |
+| [ Pietro Lorande da Silva ] | RM569125 |
 
 ---
 
