@@ -18,22 +18,30 @@
 
 Sistemas de eletropostos modernos frequentemente operam com software de alto nível (Python, Java, Node.js) rodando sobre hardware genérico (PCs industriais, Raspberry Pi sem otimização).
 
--> Software de alto nível: linguagens como Python ou Java são mais fáceis de programar, mas precisam de um intermediário (interpretador ou compilador + runtime), o que adiciona custo computacional.
--> Hardware genérico: equipamentos feitos para uso geral, não especializados — acabam consumindo mais energia do que o necessário para tarefas simples.
+**Software de alto nível** → linguagens como Python ou Java são mais fáceis de programar, mas precisam de um intermediário (interpretador ou compilador + runtime), o que adiciona custo computacional.
+
+**Hardware genérico** → equipamentos feitos para uso geral, não especializados — acabam consumindo mais energia do que o necessário para tarefas simples.</br></br>
 
 **Essa abordagem gera:**
+</br></br>
+**Consumo desnecessário de energia pelo processador** → realizando operações triviais com dezenas de instruções quando poucas bastariam.
+Instruções são comandos básicos que o processador executa (como somar, mover dados, comparar valores).
+</br></br>
 
-Consumo desnecessário de energia pelo processador realizando operações triviais com dezenas de instruções quando poucas bastariam
--> Instruções são comandos básicos que o processador executa (como somar, mover dados, comparar valores)
-Baixa eficiência no processamento de dados críticos, como autenticação de usuário, leitura de sensores de tensão/corrente e controle de carga da bateria
--> Dados críticos são aqueles que precisam ser processados rapidamente e com precisão, pois afetam diretamente o funcionamento do sistema
-Desperdício de ciclos de CPU
--> Ciclo de CPU é uma unidade de tempo do processador; quanto mais ciclos uma tarefa usa, mais energia ela consome
-Um simples loop de leitura de sensor em C compilado sem otimização pode executar 40–80 instruções; em Assembly otimizado, o mesmo resultado é obtido com 6–10 instruções
-Hardware superdimensionado
--> significa usar um hardware mais potente do que o necessário, apenas para compensar um software ineficiente
+**Baixa eficiência no processamento de dados críticos,** → como autenticação de usuário, leitura de sensores de tensão/corrente e controle de carga da bateria.
+Dados críticos são aqueles que precisam ser processados rapidamente e com precisão, pois afetam diretamente o funcionamento do sistema.
+</br></br>
 
-Em um país com mais de 100 mil eletropostos previstos até 2030, esse desperdício computacional acumulado representa um impacto energético real e evitável.
+**Desperdício de ciclos de CPU** →
+Ciclo de CPU é uma unidade de tempo do processador; quanto mais ciclos uma tarefa usa, mais energia ela consome.
+Um simples loop de leitura de sensor em C compilado sem otimização pode executar 40–80 instruções; em Assembly otimizado, o mesmo resultado é obtido com 6–10 instruções.
+</br></br>
+
+**Hardware superdimensionado** →
+Significa usar um hardware mais potente do que o necessário, apenas para compensar um software ineficiente.
+</br></br>
+
+Em um país com mais de 100 mil eletropostos previstos até 2030, esse desperdício computacional acumulado representa um impacto energético real e evitável. </br>
 ---
 
 ##  Justificativa
@@ -41,44 +49,43 @@ Em um país com mais de 100 mil eletropostos previstos até 2030, esse desperdí
 A eficiência começa no nível mais baixo da pilha de software. Ao trabalhar diretamente com instruções de processador, é possível:
 
 **Eliminar overhead de runtime**
--> Runtime é o ambiente que executa o programa (ex: JVM no Java). Ele consome memória e processamento extra
+ → Runtime é o ambiente que executa o programa (ex: JVM no Java). Ele consome memória e processamento extra.
 
 **Eliminar garbage collector**
--> mecanismo automático que limpa memória em linguagens como Java — útil, mas consome CPU
+ → mecanismo automático que limpa memória em linguagens como Java — útil, mas consome CPU.
 
 **Eliminar dependência de sistema operacional (SO)**
--> o SO gerencia processos, memória e hardware, mas adiciona latência e consumo
+ → o SO gerencia processos, memória e hardware, mas adiciona latência e consumo.
 
 **Reduzir o número de ciclos de clock necessários por operação**
--> Clock é o “ritmo” do processador — cada batida executa parte de uma instrução
+ → Clock é o “ritmo” do processador — cada batida executa parte de uma instrução.
 
 **Diminuir a frequência de clock (f)**
--> frequência é quantas operações por segundo o processador realiza
+ → frequência é quantas operações por segundo o processador realiza.
 
 **Relação de consumo energético:**
 P ∝ f × C × V²
 
--> onde:
-P = potência consumida
-f = frequência
-C = capacitância
-V = voltagem
+Onde:</br>
+P = potência consumida </br>
+f = frequência</br>
+C = capacitância</br>
+V = voltagem</br>
 
-**Rodar em microcontroladores de ultrabaixo consumo**
--> dispositivos simples, usados em sistemas embarcados
+**Rodar em microcontroladores de ultrabaixo consumo** (dispositivos simples, usados em sistemas embarcados).
 
-**mW (miliwatt) vs W (watt):**
--> 1 W = 1000 mW
--> Ou seja, um sistema em mW consome até 1000x menos energia
+→ **mW (miliwatt) VS. W (watt):**</br>
+→ 1000 mW = 1 W </br></br>
+Ou seja, um sistema em mW consome até 1000x menos energia
 ---
 
 ##  Proposta de Solução
 
-**EletroCore é um módulo de controle embarcado para eletropostos, com rotinas críticas implementadas em Assembly RISC-V (RV32I)**
+**EletroCore é um módulo de controle embarcado para eletropostos, com rotinas críticas implementadas em Assembly RISC-V (RV32I)**</br>
 
--> Assembly: linguagem de baixo nível que representa diretamente instruções do processador
--> RISC-V: arquitetura aberta de processadores, focada em simplicidade e eficiência
--> RV32I: conjunto base de instruções de 32 bits
+**Assembly** → linguagem de baixo nível que representa diretamente instruções do processador.</br>
+**RISC-V** → arquitetura aberta de processadores, focada em simplicidade e eficiência.</br>
+**RV32I** → conjunto base de instruções de 32 bits.</br>
 
 Responsável por:
 
@@ -91,9 +98,9 @@ Responsável por:
 | `charge_ctrl` | Controle PWM de carga da bateria | Timing determinístico (zero latência de SO) |
 | `energy_log` | Log de consumo em memória flash | Acesso direto a registradores de hardware |
 
--> **ADC (Analog-to-Digital Converter)**: converte sinais elétricos (analógicos) em números digitais
--> **PWM (Pulse Width Modulation)**: técnica que controla potência variando o tempo ligado/desligado de um sinal
--> **Memória flash**: memória não volátil (não perde dados ao desligar)
+**ADC (Analog-to-Digital Converter)** → converte sinais elétricos (analógicos) em números digitais.</br>
+**PWM (Pulse Width Modulation)** → técnica que controla potência variando o tempo ligado/desligado de um sinal.</br>
+**Memória flash** → memória não volátil (não perde dados ao desligar).</br>
 
 ### Fluxo do Sistema
 
@@ -111,11 +118,12 @@ Responsável por:
 [charge_ctrl.asm] — encerra carga ao atingir threshold
 
 ```
--> **RFID**: tecnologia de identificação por rádio
--> **Hash**: função matemática que transforma dados (ex: ID do cartão) em um código único
--> **Registradores**: pequenas memórias extremamente rápidas dentro do processador
--> **Loop**: repetição contínua de instruções
--> **Threshold**: valor limite definido (ex: carga máxima da bateria)
+**RFID** → tecnologia de identificação por rádio. </br>
+**Hash** → função matemática que transformar dados (ex: ID do cartão) em um código. </br>
+**Registradores** → pequenas memórias extremamente rápidas dentro do processador. </br>
+**Loop** → repetição contínua de instruções. </br>
+**Threshold** → valor limite definido (ex: carga máxima de bateria). </br>
+
 ---
 
 ##  Arquitetura Utilizada
@@ -132,9 +140,9 @@ Adotamos a arquitetura **RISC-V (RV32I)** pelos seguintes motivos técnicos:
 | Complexidade do decodificador | Baixa | Alta |
 | Adequação para embarcados |  Excelente |  Inadequado |
 
--> **CPI (Cycles Per Instruction)**: quantos ciclos uma instrução leva para executar
--> **CISC**: arquitetura com instruções complexas (ex: x86)
--> **RISC**: arquitetura com instruções simples e rápidas
+**CPI (Cycles Per Instruction)** → quantos ciclos uma instrução leva para executar.</br>
+**CISC** → arquitetura com instruções complexas (ex: x86).</br>
+**RISC** → arquitetura com instruções simples e rápidas.</br>
 
 ---
 
@@ -145,28 +153,28 @@ IF → ID → EX → MEM → WB
 (Fetch) -> (Decode) -> (Execute) ->(Memory) -> (WriteBack)
 
 ```
--> **Pipeline**: técnica que divide execução em etapas, permitindo paralelismo
--> **Fetch**: busca instrução
--> **Decode**: interpreta instrução
--> **Execute**: executa operação
--> **Memory**: acessa memória
--> **WriteBack**: grava resultado
+**Pipeline** → técnica que divide execução em etapas, permitindo paralelismo</br>
+**Fetch** → busca instrução.</br>
+**Decode** → interpreta instrução.</br>
+**Execute** → executa operação.</br>
+**Memory** → acessa memória.</br>
+**WriteBack** → grava resultado.</br>
 
 Sem dependências de dados → CPI efetivo ≈ 1
 
--> **Hazard (conflito)**: quando uma instrução depende de outra
--> **Forwarding**: técnica para evitar atrasos nesses casos
+**Hazard (conflito)** → quando uma instrução depende de outra. </br>
+**Forwarding** → técnica para evitar atrasos nesses casos. </br>
 
 ### Hardware Alvo
 
 **Microcontrolador**: SiFive HiFive1 Rev B
--> microcontrolador baseado em RISC-V
+ → microcontrolador baseado em RISC-V
 
 **Simulador de desenvolvimento**: RARS
--> ambiente para testar Assembly sem hardware físico
+→ ambiente para testar Assembly sem hardware físico
 
 **Arduino Mega (AVR)**
--> alternativa baseada em outra arquitetura (AVR)
+→ alternativa baseada em outra arquitetura (AVR)
 ---
 
 ##  Trechos de Código Assembly
@@ -199,12 +207,12 @@ read_voltage:
 ```
 ---
 
--> Aqui ocorre leitura direta do hardware, sem bibliotecas intermediárias
+→ Aqui ocorre leitura direta do hardware, sem bibliotecas intermediárias.
 
--> Conversão:
+→ Conversão:
 valor_ADC * 3300mV / 4096
 
--> Isso transforma o valor digital em tensão real
+→ Isso transforma o valor digital em tensão real.
 
 ---
 
@@ -232,11 +240,10 @@ set_charge_pwm:
     
     ret
 ```
--> Controla diretamente o sinal elétrico da carga
+→ Controla diretamente o sinal elétrico da carga.
 
--> Duty cycle:
--> porcentagem do tempo que o sinal fica ligado
-(ex: 50% = metade do tempo ligado)
+→ Duty cycle:
+→ porcentagem do tempo que o sinal fica ligado (ex: 50% = metade do tempo ligado).
 
 
 ---
@@ -269,15 +276,15 @@ hash_done:
     mv      a0, t0              # retorna hash em a0
     ret
 ```
--> FNV-1a: algoritmo de hash leve e rápido
+→ FNV-1a: algoritmo de hash leve e rápido
 
--> Ele funciona assim:
+→ Ele funciona assim:
 
 pega cada byte
 aplica XOR
 multiplica por um número primo
 
--> Resultado: um identificador único do usuário
+→ Resultado: um identificador único do usuário
 
 ---
 
@@ -293,13 +300,13 @@ multiplica por um número primo
 
 > Valores estimados com base em perfis energéticos de microcontroladores RISC-V documentados pela SiFive e RISC-V Foundation.
 
--> **gcc -O0**: sem otimização
--> **gcc -O2**: otimização intermediária
+**gcc -O0** → sem otimização
+**gcc -O2** → otimização intermediária
 
--> **Latência determinística**:
+**Latência determinística** →
 sempre leva o mesmo tempo para executar
 
--> Isso é essencial para sistemas críticos
+ → Isso é essencial para sistemas críticos
 
 ---
 
@@ -307,36 +314,35 @@ sempre leva o mesmo tempo para executar
 
 ### Energéticos
 
--> Redução de **~85% nos ciclos de CPU** nas operações críticas do eletroposto
--> Possibilidade de rodar em hardware com consumo de **50–150 mW** vs **5–15 W** de soluções genéricas
--> Extensão da vida útil da bateria de backup do eletroposto
+→ Redução de **~85% nos ciclos de CPU** nas operações críticas do eletroposto
+→ Possibilidade de rodar em hardware com consumo de **50–150 mW** vs **5–15 W** de soluções genéricas
+→ Extensão da vida útil da bateria de backup do eletroposto
 
 Operação em faixa de mW (miliwatts)
 Comparação prática:
--> 100 mW = consumo de um microcontrolador
--> 10 W = consumo de um mini computador
+→ 100 mW = consumo de um microcontrolador
+→ 10 W = consumo de um mini computador
 
 ### Financeiros (em escala)
 
--> 100.000 eletropostos × (5W economizados) × 8.760 h/ano = **~4,38 GWh/ano economizados**
--> Equivale a ~R$ 2,6 milhões/ano em energia (considerando tarifa média industrial)
+→ 100.000 eletropostos × (5W economizados) × 8.760 h/ano = **~4,38 GWh/ano economizados**
+→ Equivale a ~R$ 2,6 milhões/ano em energia (considerando tarifa média industrial)
 
--> **GWh (Gigawatt-hora)**:
+→ **GWh (Gigawatt-hora)**:
 1 GWh = 1 bilhão de watts por hora
 
--> Isso mostra impacto em escala nacional
+→ Isso mostra impacto em escala nacional
 
 ### Técnicos
 
--> **Timing determinístico**: sem preempção de SO, ciclos de controle têm latência garantida
--> **Menor footprint**: código Assembly ocupa ~10x menos memória flash que equivalente em C
--> **Maior confiabilidade**: menos camadas de abstração = menos pontos de falha
+**Timing determinístico** → sem preempção de SO, ciclos de controle têm latência garantida
+**Menor footprint** → código Assembly ocupa ~10x menos memória flash que equivalente em C
+**Maior confiabilidade** → menos camadas de abstração = menos pontos de falha
 
--> **Footprint**: quantidade de memória usada
--> Menor código → menos memória → menor custo
+**Footprint** → quantidade de memória usada
+Menor código → menos memória → menor custo
 
--> **Confiabilidade**:
-menos camadas → menos chance de erro
+**Confiabilidade** → menos camadas → menos chance de erro
 
 ---
 
@@ -354,16 +360,16 @@ Resumo em linha:
 Código otimizado permite que o mesmo hardware dure mais tempo sem substituição, reduzindo o impacto de fabricação e descarte de componentes eletrônicos (e-waste).
 
 Resumo em Linha:
--> **menos troca de hardware → menos lixo eletrônico (e-waste)**
+**menos troca de hardware → menos lixo eletrônico (e-waste)**
 
 **3. Compatibilidade com geração intermitente:**
 Microcontroladores de baixo consumo podem operar com painéis solares pequenos e baterias de ciclo de vida estendido, viabilizando **eletropostos off-grid** em locais sem acesso à rede elétrica convencional.
 
 Resumo em Linha:
 
--> **energia solar/eólica não é constante**
+→ **energia solar/eólica não é constante**
 
--> **sistemas eficientes funcionam melhor com essa variação**
+→ **sistemas eficientes funcionam melhor com essa variação**
 
 ```
 [Painel Solar] → [Bateria LiFePO4] → [EletroCore (RISC-V, ~100mW)] → [Controle de Carga EV]
@@ -398,4 +404,4 @@ Resumo em Linha:
 ---
 
 *Projeto desenvolvido para a disciplina de Arquitetura de Computadores* — **FIAP, 2026.**
-**Time Carrega-QI**
+**Time Lumos Maxima**
