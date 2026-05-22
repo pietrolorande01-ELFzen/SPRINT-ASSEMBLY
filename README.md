@@ -6,11 +6,11 @@
 
 | Nome | RM |
 |------|----|
-| [ Ana Beatriz Berbel Marini ] | RM574176 |
-| [ Gustavo Bonamico Piccoli ] | RM569984 |
-| [ Marcelo Francisco Josafá Ribeiro Martins ] | RM573905 |
-| [ Maria Eduarda Medeiros Lemos ] | RM574094 |
-| [ Pietro Lorande da Silva ] | RM569125 |
+|  Ana Beatriz Berbel Marini  | RM574176 |
+|  Gustavo Bonamico Piccoli  | RM569984 |
+|  Marcelo Francisco Josafá Ribeiro Martins  | RM573905 |
+|  Maria Eduarda Medeiros Lemos  | RM574094 |
+|  Pietro Lorande da Silva  | RM569125 |
 
 ---
 
@@ -321,11 +321,9 @@ Comparação prática da operação em faixa de mW (miliwatts): </br>
 
 ### Financeiros (em escala)
 
-100.000 eletropostos × (5W economizados) × 8.760 h/ano →  **~4,38 GWh/ano economizados** </br>
-→ Equivale a ~R$ 2,6 milhões/ano em energia (considerando tarifa média industrial)
-
-→ **GWh (Gigawatt-hora)**:
-1 GWh = 1 bilhão de watts por hora
+100.000 eletropostos × (5W economizados) × 8.760 h/ano </br>
+→  **~4,38 GWh/ano economizados**. </br>
+Equivale a **~R$ 2,6 milhões/ano** em energia (considerando tarifa média industrial)
 
 → Isso mostra impacto em escala nacional
 
@@ -345,19 +343,19 @@ A sustentabilidade neste projeto opera em três níveis:
 **1. Eficiência do próprio eletroposto:** </br>
 Ao reduzir o consumo computacional do sistema de controle, sobra mais energia da fonte renovável (solar/eólica) para carregar os veículos — a energia não é desperdiçada em processamento ineficiente.
 
-**mMnos energia usada no sistema → mais energia disponível para veículos** </br> </br>
+**Menos energia usada no sistema → mais energia disponível para veículos.** </br> </br>
 
 
 **2. Escalabilidade do impacto:** </br>
-Código otimizado permite que o mesmo hardware dure mais tempo sem substituição, reduzindo o impacto de fabricação e descarte de componentes eletrônicos (e-waste).
+O código otimizado permite que o mesmo hardware dure mais tempo sem substituição, reduzindo o impacto de fabricação e descarte de componentes eletrônicos (e-waste).
 
-**Menos troca de hardware → menos lixo eletrônico (e-waste)** </br></br>
+**Menos troca de hardware → menos lixo eletrônico.** </br></br>
 
 
 **3. Compatibilidade com geração intermitente:** </br>
 Microcontroladores de baixo consumo podem operar com painéis solares pequenos e baterias de ciclo de vida estendido, viabilizando **eletropostos off-grid** em locais sem acesso à rede elétrica convencional.
 
-**Energia solar/eólica não é constante → sistemas eficientes funcionam melhor com essa variação**
+**A energia solar/eólica não é constante → sistemas eficientes funcionam melhor com essa variação.**
 
 ```
 [Painel Solar] → [Bateria LiFePO4] → [EletroCore (RISC-V, ~100mW)] → [Controle de Carga EV]
