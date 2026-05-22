@@ -64,17 +64,16 @@ A eficiência começa no nível mais baixo da pilha de software. Ao trabalhar di
  → frequência é quantas operações por segundo o processador realiza.
 
 **Relação de consumo energético:**
-P ∝ f × C × V²
+P = F × C × V²
 
 Onde:</br>
 P = potência consumida </br>
-f = frequência</br>
+F = frequência</br>
 C = capacitância</br>
 V = voltagem</br>
 
 **Rodar em microcontroladores de ultrabaixo consumo** (dispositivos simples, usados em sistemas embarcados).
 
-→ **mW (miliwatt) VS. W (watt):**</br>
 → 1000 mW = 1 W </br></br>
 Ou seja, um sistema em mW consome até 1000x menos energia
 ---
@@ -209,7 +208,7 @@ read_voltage:
 
 → Aqui ocorre leitura direta do hardware, sem bibliotecas intermediárias.
 
-→ Conversão:
+→ **Conversão:**
 valor_ADC * 3300mV / 4096
 
 → Isso transforma o valor digital em tensão real.
@@ -242,8 +241,7 @@ set_charge_pwm:
 ```
 → Controla diretamente o sinal elétrico da carga.
 
-→ Duty cycle:
-→ porcentagem do tempo que o sinal fica ligado (ex: 50% = metade do tempo ligado).
+**Duty cycle** →  porcentagem do tempo que o sinal fica ligado (ex: 50% = metade do tempo ligado).
 
 
 ---
@@ -276,15 +274,15 @@ hash_done:
     mv      a0, t0              # retorna hash em a0
     ret
 ```
-→ FNV-1a: algoritmo de hash leve e rápido
+**FNV-1a** → algoritmo de hash leve e rápido.
 
-→ Ele funciona assim:
+Ele funciona assim:
 
-pega cada byte
-aplica XOR
+pega cada byte </br>
+aplica XOR </br>
 multiplica por um número primo
 
-→ Resultado: um identificador único do usuário
+**Resultado** → um identificador único do usuário.
 
 ---
 
@@ -300,11 +298,10 @@ multiplica por um número primo
 
 > Valores estimados com base em perfis energéticos de microcontroladores RISC-V documentados pela SiFive e RISC-V Foundation.
 
-**gcc -O0** → sem otimização
-**gcc -O2** → otimização intermediária
+**gcc -O0** → sem otimização. </br>
+**gcc -O2** → otimização intermediária.
 
-**Latência determinística** →
-sempre leva o mesmo tempo para executar
+**Latência determinística** → sempre leva o mesmo tempo para executar.
 
  → Isso é essencial para sistemas críticos
 
@@ -314,18 +311,17 @@ sempre leva o mesmo tempo para executar
 
 ### Energéticos
 
-→ Redução de **~85% nos ciclos de CPU** nas operações críticas do eletroposto
-→ Possibilidade de rodar em hardware com consumo de **50–150 mW** vs **5–15 W** de soluções genéricas
-→ Extensão da vida útil da bateria de backup do eletroposto
+→ Redução de **~85% nos ciclos de CPU** nas operações críticas do eletroposto. </br>
+→ Possibilidade de rodar em hardware com consumo de **50–150 mW** vs **5–15 W** de soluções genéricas. </br>
+→ Extensão da vida útil da bateria de backup do eletroposto.
 
-Operação em faixa de mW (miliwatts)
-Comparação prática:
-→ 100 mW = consumo de um microcontrolador
+Comparação prática da operação em faixa de mW (miliwatts): </br>
+→ 100 mW = consumo de um microcontrolador </br>
 → 10 W = consumo de um mini computador
 
 ### Financeiros (em escala)
 
-→ 100.000 eletropostos × (5W economizados) × 8.760 h/ano = **~4,38 GWh/ano economizados**
+100.000 eletropostos × (5W economizados) × 8.760 h/ano →  **~4,38 GWh/ano economizados** </br>
 → Equivale a ~R$ 2,6 milhões/ano em energia (considerando tarifa média industrial)
 
 → **GWh (Gigawatt-hora)**:
@@ -335,41 +331,33 @@ Comparação prática:
 
 ### Técnicos
 
-**Timing determinístico** → sem preempção de SO, ciclos de controle têm latência garantida
-**Menor footprint** → código Assembly ocupa ~10x menos memória flash que equivalente em C
-**Maior confiabilidade** → menos camadas de abstração = menos pontos de falha
-
-**Footprint** → quantidade de memória usada
-Menor código → menos memória → menor custo
-
-**Confiabilidade** → menos camadas → menos chance de erro
+**Timing determinístico** → sem preempção de SO, ciclos de controle têm latência garantida. </br>
+**Menor footprint** → código Assembly ocupa ~10x menos memória flash que equivalente em C. </br>
+**Maior confiabilidade** → menos camadas de abstração = menos pontos de falha. </br>
+**Menor código** → menos memória → menor custo
 
 ---
 
 ##  Relação com Sustentabilidade e Energias Renováveis
 
-A sustentabilidade neste projeto opera em dois níveis:
+A sustentabilidade neste projeto opera em três níveis:
 
-**1. Eficiência do próprio eletroposto:**
+**1. Eficiência do próprio eletroposto:** </br>
 Ao reduzir o consumo computacional do sistema de controle, sobra mais energia da fonte renovável (solar/eólica) para carregar os veículos — a energia não é desperdiçada em processamento ineficiente.
 
-Resumo em linha:
-->  **menos energia usada no sistema → mais energia disponível para veículos**
+**mMnos energia usada no sistema → mais energia disponível para veículos** </br> </br>
 
-**2. Escalabilidade do impacto:**
+
+**2. Escalabilidade do impacto:** </br>
 Código otimizado permite que o mesmo hardware dure mais tempo sem substituição, reduzindo o impacto de fabricação e descarte de componentes eletrônicos (e-waste).
 
-Resumo em Linha:
-**menos troca de hardware → menos lixo eletrônico (e-waste)**
+**Menos troca de hardware → menos lixo eletrônico (e-waste)** </br></br>
 
-**3. Compatibilidade com geração intermitente:**
+
+**3. Compatibilidade com geração intermitente:** </br>
 Microcontroladores de baixo consumo podem operar com painéis solares pequenos e baterias de ciclo de vida estendido, viabilizando **eletropostos off-grid** em locais sem acesso à rede elétrica convencional.
 
-Resumo em Linha:
-
-→ **energia solar/eólica não é constante**
-
-→ **sistemas eficientes funcionam melhor com essa variação**
+**Energia solar/eólica não é constante → sistemas eficientes funcionam melhor com essa variação**
 
 ```
 [Painel Solar] → [Bateria LiFePO4] → [EletroCore (RISC-V, ~100mW)] → [Controle de Carga EV]
